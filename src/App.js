@@ -11,8 +11,6 @@ import { blue } from "@material-ui/core/colors";
 
 import { ThemeProvider } from "@material-ui/styles";
 
-import "./assets/css/mdb.css";
-
 const theme = createMuiTheme({
     palette: {
         primary: {

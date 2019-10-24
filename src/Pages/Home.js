@@ -17,7 +17,7 @@ import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
 import InboxIcon from "@material-ui/icons/MoveToInbox";
 import MailIcon from "@material-ui/icons/Mail";
-import { NavLink, Switch, Route } from "react-router-dom";
+import { NavLink, Switch, Route, withRouter } from "react-router-dom";
 // react-reveal
 import { Fade } from "react-reveal";
 
@@ -128,17 +128,24 @@ const useStyles = makeStyles(theme => ({
     }
 }));
 
-export default function Home({ match, history }) {
-    const location = history.location.pathname;
+const Home = props => {
+    const location = props.history.location.pathname;
 
     const classes = useStyles();
     const theme = useTheme();
     const [open, setOpen] = React.useState(false);
     const [show, setShow] = useState(true);
 
-    const handleShow = () => {
+    const handleShow = (e, to) => {
         setShow(false);
-        setTimeout(() => setShow(true), 100);
+        const {
+            history: { push }
+        } = props;
+        e.preventDefault();
+        setTimeout(() => {
+            push(to);
+            setShow(true);
+        }, 500);
     };
     const handleDrawerOpen = () => {
         setOpen(true);
@@ -170,7 +177,7 @@ export default function Home({ match, history }) {
                         <MenuIcon />
                     </IconButton>
                     <Typography variant="h6" noWrap>
-                        Matrial-UI Component{" / "}
+                        React Material{" / "}
                         {location
                             .slice(location.indexOf("t/") + 2)
                             .toUpperCase()}
@@ -206,10 +213,15 @@ export default function Home({ match, history }) {
                         <ListItem
                             button
                             key={index}
-                            onClick={handleShow}
+                            onClick={e =>
+                                handleShow(
+                                    e,
+                                    `${props.match.path}/${text.value}`
+                                )
+                            }
                             component={NavLink}
                             activeClassName={classes.active}
-                            to={`${match.path}/${text.value}`}
+                            to={`${props.match.path}/${text.value}`}
                         >
                             <ListItemIcon>
                                 {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
@@ -238,7 +250,7 @@ export default function Home({ match, history }) {
                             {sideMenu.map((list, index) => (
                                 <Route
                                     key={index}
-                                    path={`${match.path}/${list.value}`}
+                                    path={`${props.match.path}/${list.value}`}
                                     component={list.component}
                                 />
                             ))}
@@ -248,4 +260,6 @@ export default function Home({ match, history }) {
             </main>
         </div>
     );
-}
+};
+
+export default withRouter(Home);

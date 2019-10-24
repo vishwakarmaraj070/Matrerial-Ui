@@ -7,16 +7,16 @@ const RButton = props => {
     const theme = createMuiTheme({
         palette: {
             primary: {
-                main: props.color
+                main: props.color ? props.color : "#e34"
             }
         }
     });
 
     // style
-    const MyButton = styled(({ ...props }) => <Button startIcon {...props} />)({
+    const MyButton = styled(({ ...props }) => <Button {...props} />)({
         wordWrap: "break-word",
         whiteSpace: "normal",
-        marginRight: "0.5rem",
+        marginRight: "0.3rem",
         borderWidth: () => (props.variant === "outlined" ? "2px" : null),
         borderRadius: () => (props.rounded ? "10em" : "0.125rem"),
         padding: () =>

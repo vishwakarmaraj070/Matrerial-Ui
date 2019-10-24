@@ -10,6 +10,9 @@ const useStyele = makeStyles({
         bottom: "0",
         left: 90,
         right: 20
+    },
+    activeNav: {
+        backgroundColor: "#e34"
     }
 });
 
@@ -29,8 +32,11 @@ export default function BottomNav(props) {
             {navData.map((nav, index) => (
                 <NavLink
                     key={index}
+                    activeClassName={classes.activeNav}
                     to={`${props.match.path}/${nav.value}`}
-                    onClick={props.handleShow}
+                    onClick={e =>
+                        props.handleShow(e, `${props.match.path}/${nav.value}`)
+                    }
                 >
                     <BottomNavigationAction
                         label={nav.value}

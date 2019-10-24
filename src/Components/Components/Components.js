@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Switch, Route, Redirect } from "react-router-dom";
+import { Switch, Route, Redirect, withRouter } from "react-router-dom";
 import ButtonsContainer from "./Buttons/ButtonsContainer";
 import { Box } from "@material-ui/core";
 import BottomNav from "../BottomNav";
@@ -41,9 +41,16 @@ const navData = comps.map(nav => {
 const Components = props => {
     const [show, setShow] = useState(true);
 
-    const handleShow = () => {
+    const handleShow = (e, to) => {
         setShow(false);
-        setTimeout(() => setShow(true), 100);
+        const {
+            history: { push }
+        } = props;
+        e.preventDefault();
+        setTimeout(() => {
+            push(to);
+            setShow(true);
+        }, 500);
     };
 
     return (
@@ -62,7 +69,7 @@ const Components = props => {
                         <Route
                             path={`${props.match.path}/`}
                             render={() => (
-                                <Redirect to={`${props.match.path}/buttons`} />
+                                <Redirect to={`${props.match.path}/cards`} />
                             )}
                         />
                     </Fade>
@@ -77,4 +84,4 @@ const Components = props => {
     );
 };
 
-export default Components;
+export default withRouter(Components);
